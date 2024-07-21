@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Character encoding for the document -->
+    <meta charset="UTF-8">
+    <!-- Responsive design settings -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Title of the web page -->
+    <title>Library Management System</title>
+    <!-- Load static files -->
+    {% load static %}
+    <style>
+        /* Basic styling for the body */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url("{% static 'images/homepage.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        /* Styling for the container */
+        .container {
+            background-color: rgba(255, 255, 255, 0.8); /* Slight transparency for better readability */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        /* Styling for the header */
+        h1 {
+            color: #333;
+        }
+        /* Styling for paragraphs */
+        p {
+            color: #666;
+        }
+        /* Styling for links */
+        a {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        /* Styling for link hover state */
+        a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Welcome message -->
+        <h1>Welcome to the Library Management System!</h1>
+        <!-- Description paragraph -->
+        <p>Manage your library efficiently and effortlessly.</p>
+        <!-- Login link -->
+        <a href="{% url 'login' %}">Login</a>
+        <!-- Register link -->
+        <a href="{% url 'register' %}">Register</a>
+    </div>
+</body>
+</html>

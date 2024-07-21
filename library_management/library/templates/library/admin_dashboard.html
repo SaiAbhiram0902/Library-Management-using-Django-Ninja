@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Character encoding for the document -->
+    <meta charset="UTF-8">
+    <!-- Responsive design settings -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Title of the web page -->
+    <title>Admin Dashboard</title>
+    <!-- Load static files -->
+    {% load static %}
+
+    <style>
+        /* Full height for html and body */
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        /* Basic styling for the body */
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url("{% static 'images/dashboard.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        /* Styling for the container */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9); /* Slight transparency for better readability */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        /* Styling for the header */
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        /* Styling for the table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        /* Styling for the links section */
+        .links {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .links a {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .links a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Dashboard header -->
+        <h1>Admin Dashboard</h1>
+        <!-- Link to admin panel -->
+        <div class="links">
+            <a href="/admin/">Go to Admin Panel</a>
+        </div>
+        <div>
+            <!-- Books list header -->
+            <h2>Books List</h2>
+            <!-- Table for displaying books -->
+            <table id="books-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Published Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Book rows will be populated here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const booksTable = document.getElementById('books-table').getElementsByTagName('tbody')[0];
+
+            // Fetch books and populate the table
+            fetchBooks();
+
+            function fetchBooks() {
+                fetch('/api/admin/books')
+                .then(response => response.json())
+                .then(data => {
+                    booksTable.innerHTML = '';
+                    data.forEach(book => {
+                        const row = booksTable.insertRow();
+                        row.insertCell(0).innerText = book.id;
+                        row.insertCell(1).innerText = book.title;
+                        row.insertCell(2).innerText = book.author;
+                        row.insertCell(3).innerText = book.published_date;
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        });
+    </script>
+</body>
+</html>

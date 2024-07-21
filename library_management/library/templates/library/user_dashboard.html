@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Character encoding for the document -->
+    <meta charset="UTF-8">
+    <!-- Responsive design settings -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Title of the web page -->
+    <title>User Dashboard</title>
+    <!-- Load static files -->
+    {% load static %}
+
+    <style>
+        /* Full height for html and body */
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        /* Basic styling for the body */
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url("{% static 'images/dashboard.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        /* Styling for the container */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9); /* Slight transparency for better readability */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        /* Styling for the header */
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        /* Styling for the table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        /* Styling for the action buttons */
+        .actions {
+            display: flex;
+            justify-content: space-around;
+        }
+        .actions button {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+        }
+        .actions button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Dashboard header -->
+        <h1>User Dashboard</h1>
+        <div>
+            <!-- Books list header -->
+            <h2>Available Books</h2>
+            <!-- Table for displaying available books -->
+            <table id="available-books-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Published Date</th>
+                        <th>Copies</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Available book rows will be populated here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const availableBooksTable = document.getElementById('available-books-table').getElementsByTagName('tbody')[0];
+
+            // Fetch available books and populate the table
+            fetchAvailableBooks();
+
+            function fetchAvailableBooks() {
+                fetch('/api/user/books/')
+                .then(response => response.json())
+                .then(data => {
+                    availableBooksTable.innerHTML = '';
+                    data.forEach(book => {
+                        const row = availableBooksTable.insertRow();
+                        row.insertCell(0).innerText = book.id;
+                        row.insertCell(1).innerText = book.title;
+                        row.insertCell(2).innerText = book.author;
+                        row.insertCell(3).innerText = book.published_date;
+                        row.insertCell(4).innerText = book.copies;
+                        const actionsCell = row.insertCell(5);
+                        actionsCell.innerHTML = `
+                            <div class="actions">
+                                <button onclick="borrowBook(${book.id})" ${book.copies <= 0 ? 'disabled' : ''}>Borrow</button>
+                                <button onclick="returnBook(${book.id})">Return</button>
+                            </div>
+                        `;
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+            }
+
+            // Function to borrow a book
+            window.borrowBook = function(bookId) {
+                fetch(`/api/user/books/borrow/${bookId}/`, {
+                    method: 'POST',
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        fetchAvailableBooks();
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+
+            // Function to return a book
+            window.returnBook = function(bookId) {
+                fetch(`/api/user/books/return/${bookId}/`, {
+                    method: 'POST',
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        fetchAvailableBooks();
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        });
+    </script>
+</body>
+</html>
