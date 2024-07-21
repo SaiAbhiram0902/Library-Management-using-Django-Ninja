@@ -21,7 +21,7 @@ This is a simplified backend for an online library management system built using
 - Django 3.2+
 - Django Ninja
 - SQLite (default database)
-- other specified in requirements.txt
+- Other specified in requirements.txt
 
 ## Installation
 
