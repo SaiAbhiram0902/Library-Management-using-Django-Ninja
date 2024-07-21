@@ -1,0 +1,16 @@
+annotated-types==0.7.0
+asgiref==3.8.1
+coreapi==2.3.3
+coreschema==0.0.4
+Django==5.0.7
+django-ninja==0.12.1
+djangorestframework==3.15.2
+pydantic==1.7.4
+pydantic_core==2.20.1
+python-dateutil==2.9.0.post0
+pytz==2024.1
+sqlparse==0.5.1
+typing_extensions==4.12.2
+tzdata==2024.1
+uritemplate==4.1.1
+urllib3==2.2.2
